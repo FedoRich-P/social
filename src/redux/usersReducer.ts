@@ -1,3 +1,7 @@
+import {Dispatch} from "redux";
+import {usersApi} from "../api/api.ts";
+import {AppThunk} from "./redux-store.ts";
+
 export type UserFromData = {
     name: string
     id: number
@@ -67,6 +71,38 @@ export const toggleFetchingAC = (payload: {isFetching: boolean}) => {
     return {type: 'TOGGLE_FETCHING', payload} as const
 }
 
+export const FollowTC =(payload: {userId: number}):AppThunk => (dispatch: Dispatch) => {
+    const {userId} = payload
+    usersApi.followUsers('post',{ userId}).then(res => {
+        if (res.resultCode === 0) {
+            dispatch(followAC({userId, isFollowed: true}));
+        }
+    })
+}
+
+export const UnFollowTC =(payload: {userId: number}):AppThunk => (dispatch: Dispatch) => {
+    const {userId} = payload
+    usersApi.unFollowUsers('delete',{ userId}).then(res => {
+        if (res.resultCode === 0) {
+            dispatch(unFollowAC({userId, isFollowed: false}))
+        }
+    })
+}
+
+export const FetchTC =(payload: {currentPage: number, pageSize: number}): AppThunk => (dispatch: Dispatch) => {
+    const {currentPage, pageSize} = payload;
+    usersApi.getUsers({currentPage, pageSize}).then(res => {
+        if (res.items) {
+            dispatch(setUsersAC({users: res.items}))
+            dispatch(setTotalUsersCountAC({totalCount: res.totalCount}))
+            dispatch(toggleFetchingAC({isFetching: false}))
+        } else {
+            dispatch(toggleFetchingAC({isFetching: true}))
+        }
+    })
+}
+
+
 export type FollowACType = ReturnType<typeof followAC>
 export type UnFollowACType = ReturnType<typeof unFollowAC>
 export type SetUsersACType = ReturnType<typeof setUsersAC>
@@ -74,61 +110,4 @@ export type SetCurrentPageACType = ReturnType<typeof setCurrentPageAC>
 export type SetTotalUsersCountACType = ReturnType<typeof setTotalUsersCountAC>
 export type ToggleFetchingACACType = ReturnType<typeof toggleFetchingAC>
 
-type UsersAction = FollowACType | UnFollowACType | SetUsersACType | SetCurrentPageACType | SetTotalUsersCountACType | ToggleFetchingACACType
-
-
-// const imgSrc = 'https://avatars.mds.yandex.net/i?id=39012a20de9d0577cc073dc266d44100_l-5278064-images-thumbs&n=13'
-
-// type UserLocation = {
-//     city: string,
-//     country: string
-// }
-
-// export type User = {
-//     id:string,
-//     fullName: string,
-//     status: string,
-//     location: UserLocation,
-//     followed: boolean,
-//     src: string
-// }
-
-
-// {
-//     const {userId, isFollowed} = action.payload;
-//     return {...state, users: state.users.map(user => user.id === userId ? {...user, followed: isFollowed} : user)};
-// }
-
-// {
-//     id: v1(),
-//     fullName: "Elizabet",
-//     status: 'Big-Boss',
-//     location: {
-//         city: 'Moscow',
-//         country: 'RF'
-//     },
-//     followed: true,
-//     src: imgSrc
-// },
-// {
-//     id: v1(),
-//     fullName: "Mary",
-//     status: 'Boss',
-//     location: {
-//         city: 'Moscow',
-//         country: 'RF'
-//     },
-//     followed: true,
-//     src: imgSrc
-// },
-// {
-//     id: v1(),
-//     fullName: "John",
-//     status: 'Worker',
-//     location: {
-//         city: 'Minsk',
-//         country: 'Belarus'
-//     },
-//     followed: false,
-//     src: imgSrc
-// },
+export type UsersAction = FollowACType | UnFollowACType | SetUsersACType | SetCurrentPageACType | SetTotalUsersCountACType | ToggleFetchingACACType

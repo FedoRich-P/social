@@ -1,6 +1,7 @@
 .userItem {
-    margin-bottom: 30px;
+    margin: 0 auto 30px;
     padding: 20px;
+    max-width: 500px;
     display: flex;
     flex-direction: column;
     align-items: center;
