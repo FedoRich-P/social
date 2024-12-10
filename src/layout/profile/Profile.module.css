@@ -1,0 +1,40 @@
+.userCard {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+}
+
+.imgWrapper {
+    margin-right: 15px;
+    width: 250px;
+    height: 150px;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.userData {
+    margin-bottom: 20px;
+    padding: 10px;
+    flex: 0 1 50%;
+    border: 2px solid brown;
+    border-radius: 10px;
+}
+
+.userData li {
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+}
+
+
+.userData li dt {
+    font-weight: 500;
+
+}
+
+.userData li dt:after {
+    content: " : ";
+
+}

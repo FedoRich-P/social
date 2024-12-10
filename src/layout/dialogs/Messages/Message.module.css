@@ -1,0 +1,13 @@
+.messages {
+    padding: 10px;
+    grid-column: 2/ -1;
+    grid-row: 2 / -1;
+    border: 1px solid brown;
+    border-radius: 10px;
+    text-align: start;
+}
+
+.messages li {
+    padding: 5px;
+    border-bottom: 1px dashed brown; ;
+}

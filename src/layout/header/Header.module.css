@@ -1,0 +1,20 @@
+.header {
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    grid-column: 1 / 5;
+    grid-row: 1 / 2;
+    background-color: antiquewhite;
+    border-radius: 0 0 10px 10px;
+}
+
+.header h1 {
+    margin: 0 auto;
+}
+
+.button {
+    padding: 5px 10px;
+    border: 2px solid white;
+    border-radius: 10px;
+}
