@@ -1,9 +1,12 @@
 import s from './Dialogs.module.css'
 import {UserDialog} from "./dialog/UserDialog";
 import {MessagesPagePropsType} from "../../redux/store";
-import React, {ChangeEvent} from "react";
+import  {ChangeEvent} from "react";
 import {Button} from "../../components/button/Button";
 import {Message} from "./Messages/Message";
+import {useAppSelector} from "../../common/hooks/useAppSelector.ts";
+import {selectAuth, selectUsers} from "../../app/appSelectors.ts";
+import {Navigate} from "react-router-dom";
 
 type DialogsPropsType = {
     upDateNewMessageBody: (value: string) => void
@@ -12,13 +15,19 @@ type DialogsPropsType = {
 };
 
 export const Dialogs = ({
-                            state: {users, messages, newMessagesBody},
+                            state: {messages, newMessagesBody},
                             upDateNewMessageBody,
                             sendMessage
                         }: DialogsPropsType) => {
 
+    const isAuth = useAppSelector(selectAuth).isAuth
+    const users = useAppSelector(selectUsers).users
+
+
     const usersList = users.map((user) => <UserDialog key={user.id} {...user}/>)
     const messagesList = messages.map((message) => <Message key={message.id} {...message}/>)
+
+
 
     const onSendMessageClick = () => {
         sendMessage()
@@ -27,6 +36,8 @@ export const Dialogs = ({
     const onNewMessageChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
         upDateNewMessageBody(e.currentTarget.value)
     }
+
+    if(!isAuth) return <Navigate to="/login"/>
 
     return (
         <div className={s.dialogs}>

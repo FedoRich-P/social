@@ -1,9 +1,11 @@
-import {useSelector} from "react-redux";
-import {RootState} from "./redux/redux-store.ts";
+import {useAppSelector} from "./common/hooks/useAppSelector.ts";
+import {selectAuth} from "./app/appSelectors.ts";
 
 export const Login = () => {
 
-    const myProfile = useSelector((state: RootState) => state.auth);
+    const myProfile = useAppSelector(selectAuth);
+    // const myProfile = useSelector((state: RootState) => state.auth);
+
     return (
         <div>
             {myProfile.email}

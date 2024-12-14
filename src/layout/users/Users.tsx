@@ -5,7 +5,7 @@ import {RootState} from "../../redux/redux-store";
 import {FetchTC, FollowTC, setCurrentPageAC, UnFollowTC, UserFromData} from "../../redux/usersReducer";
 import {CircularProgress} from "@mui/material";
 import {NavLink} from "react-router-dom";
-import {useAppDispatch} from "../../hooks/useAppDispatch.ts";
+import {useAppDispatch} from "../../common/hooks/useAppDispatch.ts";
 
 
 const imgSrc = 'https://avatars.mds.yandex.net/i?id=39012a20de9d0577cc073dc266d44100_l-5278064-images-thumbs&n=13'

@@ -1,5 +1,8 @@
 import {v1} from "uuid";
 import {ProfilePagePropsType} from "./store";
+import {Dispatch} from "redux";
+import {usersApi} from "../api/api.ts";
+import {AppThunk} from "./redux-store.ts";
 
 const src = 'https://yt3.googleusercontent.com/gNPWe_Z8GKUvjGzTvGSbqvpwUMEfUFtozENoQgyQnxuFuF3fe5bq5tsWm8o0QuwMaeb2ICycHQ=s900-c-k-c0x00ffffff-no-rj'
 
@@ -28,7 +31,7 @@ const initialState: ProfilePagePropsType = {
 
 type InitialState = typeof initialState
 
-export const profileReducer = (state = initialState, action: Action): InitialState => {
+export const profileReducer = (state = initialState, action: ProfileAction): InitialState => {
     switch (action.type) {
         case ADD_NEW_POST: {
             return {
@@ -59,7 +62,7 @@ export type AddNewPostType = ReturnType<typeof addNewPostAC>
 export type UpdateNewPostTextType = ReturnType<typeof updateNewPostTextAC>
 export type SetUserProfileACType = ReturnType<typeof setUserProfileAC>
 
-type Action = AddNewPostType | UpdateNewPostTextType | SetUserProfileACType
+export type ProfileAction = AddNewPostType | UpdateNewPostTextType | SetUserProfileACType
 
 export const addNewPostAC = () => {
     return {type: ADD_NEW_POST} as const
@@ -71,6 +74,17 @@ export const setUserProfileAC = (payload: { profile: DomainUser }) => {
 export const updateNewPostTextAC = (payload: { text: string }) => {
     return {type: UPDATE_NEW_POST_TEXT, payload} as const
 }
+
+export const getUserProfileTC = (payload: {userId: string}): AppThunk => (dispatch: Dispatch) => {
+    const {userId} = payload
+    usersApi.getProfile({userId}).then(res => {
+        if (res) {
+            dispatch(setUserProfileAC(res));
+        }
+    })
+}
+
+
 
 export type DomainUser = {
     userId: string
