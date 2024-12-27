@@ -6,6 +6,7 @@ import {FetchTC, FollowTC, setCurrentPageAC, UnFollowTC, UserFromData} from "../
 import {CircularProgress} from "@mui/material";
 import {NavLink} from "react-router-dom";
 import {useAppDispatch} from "../../common/hooks/useAppDispatch.ts";
+import {Paginator} from "../../components/pagination/Pagination.tsx";
 
 
 const imgSrc = 'https://avatars.mds.yandex.net/i?id=39012a20de9d0577cc073dc266d44100_l-5278064-images-thumbs&n=13'
@@ -53,19 +54,19 @@ export const Users = () => {
             {isFetching && <CircularProgress size="3rem"/>}
             <ul style={{
                 display: 'flex',
-                flexWrap: 'wrap',
                 justifyContent: "center",
                 gap: '20px',
                 marginBottom: '15px'
             }}>
-                {pages.map(btn => {
-                    return (
-                        <li key={btn}>
-                            <button onClick={() => setCurrentPage(btn)} className={s.button}>Page : {btn} </button>
-                        </li>
-                    )
-                })
-                }
+                <Paginator currentPage={currentPage} onPageChanged={setCurrentPage} totalItemsCount={totalUserCount} pageSize={pageSize}/>
+                {/*{pages.map(btn => {*/}
+                {/*    return (*/}
+                {/*        <li key={btn}>*/}
+                {/*            <button onClick={() => setCurrentPage(btn)} className={s.button}>Page : {btn} </button>*/}
+                {/*        </li>*/}
+                {/*    )*/}
+                {/*})*/}
+                {/*}*/}
             </ul>
             <ul>
                 {users?.map((user: UserFromData) => {
