@@ -1,14 +1,12 @@
-import React, {ChangeEvent} from 'react';
+import {ChangeEvent} from 'react';
 import type {ProfilePagePropsType} from "../../../../redux/store";
 import {addNewPostAC, updateNewPostTextAC} from "../../../../redux/profileReducer";
 import {MyPosts} from "../MyPosts";
 import {useDispatch, useSelector} from "react-redux";
 import type {RootState} from "../../../../redux/redux-store";
 
-type Props = {
-};
 
-export const MyPostsContainer = (props: Props) => {
+export const MyPostsContainer = () => {
 
     const state = useSelector<RootState, ProfilePagePropsType>(state => state.profile);
     const dispatch = useDispatch();

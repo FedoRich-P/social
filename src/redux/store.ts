@@ -30,6 +30,7 @@ export type ProfilePagePropsType = {
     postData: MyPostPropsType [];
     newPostText: string;
     profile: any;
+    status: string;
 }
 export type MessagesPagePropsType = {
     users: UsersProps [];

@@ -20,6 +20,7 @@ export const Users = () => {
     const currentPage = useSelector<RootState, number>((state) => state.users.currentPage);
     const isFetching = useSelector<RootState, boolean>((state) => state.users.isFetching);
 
+
     const pagesCount = totalUserCount ? Math.ceil(totalUserCount / pageSize) : 1;
 
     const follow = (userId: number) => {

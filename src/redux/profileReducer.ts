@@ -1,13 +1,15 @@
 import {v1} from "uuid";
 import {ProfilePagePropsType} from "./store";
 import {Dispatch} from "redux";
-import {usersApi} from "../api/api.ts";
+import {profileApi} from "../api/api.ts";
 import {AppThunk} from "./redux-store.ts";
 
 const src = 'https://yt3.googleusercontent.com/gNPWe_Z8GKUvjGzTvGSbqvpwUMEfUFtozENoQgyQnxuFuF3fe5bq5tsWm8o0QuwMaeb2ICycHQ=s900-c-k-c0x00ffffff-no-rj'
 
 const ADD_NEW_POST = 'ADD_NEW_POST'
 const UPDATE_NEW_POST_TEXT = 'UPDATE_NEW_POST_TEXT'
+const GET_PROFILE_STATUS = 'GET_PROFILE_STATUS'
+const UPDATE_PROFILE_STATUS = 'UPDATE_PROFILE_STATUS'
 
 const initialState: ProfilePagePropsType = {
     postData: [
@@ -25,7 +27,8 @@ const initialState: ProfilePagePropsType = {
         }
     ],
     newPostText: '',
-    profile: {}
+    profile: '',
+    status: ''
 
 }
 
@@ -47,11 +50,15 @@ export const profileReducer = (state = initialState, action: ProfileAction): Ini
                 newPostText: '',
             }
         }
-        case UPDATE_NEW_POST_TEXT: {
-            return {...state, newPostText: action.payload.text}
+        case GET_PROFILE_STATUS: {
+            return {...state, status: action.payload.status}
+        }
+        case UPDATE_PROFILE_STATUS: {
+            console.log(state)
+            return {...state, status: action.payload.status}
         }
         case 'SET_USER_PROFILE': {
-            return {...state, profile: {...action.payload}}
+            return {...state, profile: {...state.profile, ...action.payload}}
         }
         default:
             return state
@@ -61,8 +68,15 @@ export const profileReducer = (state = initialState, action: ProfileAction): Ini
 export type AddNewPostType = ReturnType<typeof addNewPostAC>
 export type UpdateNewPostTextType = ReturnType<typeof updateNewPostTextAC>
 export type SetUserProfileACType = ReturnType<typeof setUserProfileAC>
+export type UpdateProfileStatus = ReturnType<typeof updateProfileStatusAC>
+export type GetProfileStatus = ReturnType<typeof getProfileStatusAC>
 
-export type ProfileAction = AddNewPostType | UpdateNewPostTextType | SetUserProfileACType
+export type ProfileAction =
+    AddNewPostType
+    | UpdateNewPostTextType
+    | SetUserProfileACType
+    | UpdateProfileStatus
+    | GetProfileStatus
 
 export const addNewPostAC = () => {
     return {type: ADD_NEW_POST} as const
@@ -70,21 +84,43 @@ export const addNewPostAC = () => {
 export const setUserProfileAC = (payload: { profile: DomainUser }) => {
     return {type: 'SET_USER_PROFILE', payload} as const
 }
-
 export const updateNewPostTextAC = (payload: { text: string }) => {
     return {type: UPDATE_NEW_POST_TEXT, payload} as const
 }
 
-export const getUserProfileTC = (payload: {userId: string}): AppThunk => (dispatch: Dispatch) => {
+export const updateProfileStatusAC = (payload: { status: string }) => {
+    return {type: UPDATE_PROFILE_STATUS, payload} as const
+}
+export const getProfileStatusAC = (payload: { status: string }) => {
+    return {type: GET_PROFILE_STATUS, payload} as const
+}
+export const getUserProfileTC = (payload: { userId: string }): AppThunk => (dispatch: Dispatch) => {
     const {userId} = payload
-    usersApi.getProfile({userId}).then(res => {
+    profileApi.getProfile({userId}).then(res => {
         if (res) {
             dispatch(setUserProfileAC(res));
         }
     })
 }
 
+export const getProfileStatusTC = (payload: { userId: string }): AppThunk => (dispatch: Dispatch) => {
+    const {userId} = payload
+    profileApi.getStatus(userId).then(res => {
+        if (res.data) {
+            dispatch(getProfileStatusAC({status: res.data}));
+        } else {
+            dispatch(getProfileStatusAC({status: ''}));
+        }
+    })
+}
 
+export const UpdateProfileStatusTC = (payload: { status: string }): AppThunk => (dispatch: Dispatch) => {
+    const {status} = payload
+    profileApi.updateStatus(status).then(res => {
+        console.log(res)
+        dispatch(updateProfileStatusAC({status}));
+    })
+}
 
 export type DomainUser = {
     userId: string
@@ -92,6 +128,7 @@ export type DomainUser = {
     lookingForAJob: boolean
     lookingForAJobDescription: string
     fullName: string
+    status: string
     contacts: {
         github: string
         vk: string
