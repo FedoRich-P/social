@@ -59,53 +59,40 @@ export const Users = () => {
                 gap: '20px',
                 marginBottom: '15px'
             }}>
-                <Paginator currentPage={currentPage} onPageChanged={setCurrentPage} totalItemsCount={totalUserCount} pageSize={pageSize}/>
-                {/*{pages.map(btn => {*/}
-                {/*    return (*/}
-                {/*        <li key={btn}>*/}
-                {/*            <button onClick={() => setCurrentPage(btn)} className={s.button}>Page : {btn} </button>*/}
-                {/*        </li>*/}
-                {/*    )*/}
-                {/*})*/}
-                {/*}*/}
+                <Paginator currentPage={currentPage} onPageChanged={setCurrentPage} totalItemsCount={totalUserCount}
+                           pageSize={pageSize}/>
             </ul>
             <ul>
                 {users?.map((user: UserFromData) => {
 
-                    const subscribeHandler = ()=> {
-                        if (user.followed) {
-                            unFollow(user.id)
-                            return
+                        const subscribeHandler = () => {
+                            if (user.followed) {
+                                unFollow(user.id)
+                                return
+                            }
+                            follow(user.id)
                         }
-                        follow(user.id)
-                    }
-                    const followBtnText = user.followed ? 'unFollow' : 'Follow'
+                        const followBtnText = user.followed ? 'unFollow' : 'Follow'
 
-                    return (
-                        <li key={user.id} className={s.userItem}>
-                            <h2>Name: {user.name}</h2>
-                            <div className={s.userImg}>
-                                <NavLink to={`/profile/${user.id}`}>
-                                    <img src={user.photos.small ? user.photos.small : imgSrc} alt={user.name}/>
-                                </NavLink>
-                            </div>
-                            <h3>Status: {user.status ? user.status : `${user.name} пока без статуса`}</h3>
-                            <div className={s.userButton}>
-                                <button onClick={subscribeHandler}
-                                        className={s.button}>{followBtnText}</button>
-                            </div>
-                        </li>
-                    )
+                        return (
+                            <li key={user.id} className={s.userItem}>
+                                <h2>Name: {user.name}</h2>
+                                <div className={s.userImg}>
+                                    <NavLink to={`/profile/${user.id}`}>
+                                        <img src={user.photos.small ? user.photos.small : imgSrc} alt={user.name}/>
+                                    </NavLink>
+                                </div>
+                                <h3>Status: {user.status ? user.status : `${user.name} пока без статуса`}</h3>
+                                <div className={s.userButton}>
+                                    <button onClick={subscribeHandler}
+                                            className={s.button}>{followBtnText}</button>
+                                </div>
+                            </li>
+                        )
                     }
                 )
                 }
-                    </ul>
-                    </>
-                    );
-                };
-
-// const setUsers = () => {
-//     axios.get('https://social-network.samuraijs.com/api/1.0/users').then(res => {
-//         dispatch(setUsersAC({users: res.data.items}))
-//     })
-// }
+            </ul>
+        </>
+    );
+};

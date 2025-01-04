@@ -18,5 +18,11 @@ export type AppAction = ProfileAction | UsersAction
 export type ReduxState = typeof store
 export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = ThunkDispatch<RootState, unknown, UnknownAction>;
-export type AppThunk = ThunkAction<void, RootState, unknown, ProfileAction>;
+// export type AppThunk = ThunkAction<void, RootState, unknown, ProfileAction>;
+export type AppThunk<ReturnType = void> = ThunkAction<
+    ReturnType,
+    RootState,
+    unknown,
+    UnknownAction
+>;
 

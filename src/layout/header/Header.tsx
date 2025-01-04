@@ -2,7 +2,7 @@ import s from './Header.module.css'
 import {Button} from "@mui/material";
 import {useEffect} from "react";
 import {useAppDispatch} from "../../common/hooks/useAppDispatch.ts";
-import {setAuthUsersTC} from "../../redux/authReducer.ts";
+import {exitAuthUsersTC, setAuthUsersTC} from "../../redux/authReducer.ts";
 import {useAppSelector} from "../../common/hooks/useAppSelector.ts";
 import {selectAuth} from "../../app/appSelectors.ts";
 
@@ -29,15 +29,21 @@ export const Header = () => {
         <header className={s.header}>
             <h1>Socials</h1>
             <div>
-                {myProfile.isAuth ? myProfile.login : <Button href={'/login'} style={{
+                {myProfile.isAuth ? <div style={{display: 'flex'}}>
+                    <h2 className={s.pagesTitle}>{myProfile.login}'s page</h2>
+                    <button className={s.exitButton} onClick={() => {
+                        dispatch(exitAuthUsersTC())
+                    }}>Exit
+                    </button>
+                </div> : <Button href={'/login'} style={{
                     padding: ' 5px 20px',
                     border: '2px solid white',
                     borderRadius: '10px',
                     fontWeight: 'bold',
                     fontSize: '1.1rem'
                 }}>Login</Button>}
-                {/*<NavLink to={'/login'}>Login</NavLink>*/}
             </div>
+
         </header>
     );
 };

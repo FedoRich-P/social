@@ -4,11 +4,11 @@ import {Navbar} from "./layout/navbar/Navbar";
 import {Profile} from "./layout/profile/Profile";
 import {Route, Routes} from "react-router-dom";
 import {Settings} from "./layout/settings/Settings";
-import {DialogsContainer} from "./layout/dialogs/DialogsContainer";
 import {Users} from "./layout/users/Users";
 import {News} from "./layout/News/News";
 import {Music} from "./layout/Music/Music";
-import {Login} from "./Login.tsx";
+import {Login} from "./Login/Login.tsx";
+import {Dialogs} from "./layout/dialogs/Dialogs.tsx";
 
 function App() {
     return (
@@ -22,7 +22,7 @@ function App() {
                         <Route path={'/profile'} element={<Profile/>}>
                             <Route path={'/profile/:id'} element={<Profile/>}/>
                         </Route>
-                        <Route path={'/dialogs/*'} element={<DialogsContainer/>}/>
+                        <Route path={'/dialogs/*'} element={<Dialogs/>}/>
                         <Route path={'/users'} element={<Users/>}/>
                         <Route path={'/news'} element={<News/>}/>
                         <Route path={'/music'} element={<Music/>}/>

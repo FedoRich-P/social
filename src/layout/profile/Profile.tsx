@@ -15,7 +15,7 @@ export const Profile = () => {
     const params = useParams();
 
     useEffect(() => {
-        const userId = params.id || '2';
+        const userId = params.id || '31808';
         dispatch(getUserProfileTC({userId}))
         dispatch(getProfileStatusTC({userId}))
     }, [params])

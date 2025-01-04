@@ -75,3 +75,9 @@
     color: white;
     background-color: rgba(0, 128, 0, 0.4);
 }
+
+.error {
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
+}

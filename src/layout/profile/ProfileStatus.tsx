@@ -1,4 +1,4 @@
-import {ChangeEvent, useEffect, useState} from "react";
+import {ChangeEvent, useState} from "react";
 import {useAppSelector} from "../../common/hooks/useAppSelector.ts";
 import {selectProfile} from "../../app/appSelectors.ts";
 import {useAppDispatch} from "../../common/hooks/useAppDispatch.ts";
@@ -7,17 +7,12 @@ import {UpdateProfileStatusTC} from "../../redux/profileReducer.ts";
 export const ProfileStatus = () => {
     const [editMode, setEditMode] = useState(false)
     const [value, setValue] = useState('')
-    const [valueToState, setValueToState] = useState('')
     const status = useAppSelector(selectProfile).status;
     const dispatch = useAppDispatch()
 
-    useEffect(() => {
-        dispatch(UpdateProfileStatusTC({status: valueToState}))
-    }, [valueToState])
-
     const activateEditMode = () => {
         setEditMode(editMode => !editMode)
-        setValueToState(value)
+        dispatch(UpdateProfileStatusTC({status: value}))
     }
 
     const onInputChange = (e: ChangeEvent<HTMLInputElement>) => {

@@ -1,7 +1,7 @@
 import {ActionType, MessagesPagePropsType} from "./store";
 import {v1} from "uuid";
+import {Dispatch} from "redux";
 
-const UPDATE_NEW_MESSAGES_BODY = 'UPDATE_NEW_MESSAGES_BODY'
 const SEND_MESSAGE = 'SEND_MESSAGE'
 
 const imgSrc = 'https://avatars.mds.yandex.net/i?id=39012a20de9d0577cc073dc266d44100_l-5278064-images-thumbs&n=13'
@@ -18,27 +18,19 @@ const initialState = {
         {id: v1(), text: "Hello ! Elizabet"},
         {id: v1(), text: "Yo Mary"},
     ],
-    newMessagesBody: '',
 }
 
 
 export const dialogsReducer = (state: MessagesPagePropsType = initialState, action: ActionType): MessagesPagePropsType => {
 
     switch (action.type) {
-        case UPDATE_NEW_MESSAGES_BODY: {
-            return {
-                ...state,
-                newMessagesBody: action.payload.text
-            };
-        }
         case SEND_MESSAGE: {
             return {
                 ...state,
                 messages: [
                     ...state.messages,
-                    {id: v1(), text: state.newMessagesBody},
+                    {id: v1(), text: action.payload.text},
                 ],
-                newMessagesBody: '',
             };
         }
         default :
@@ -46,14 +38,19 @@ export const dialogsReducer = (state: MessagesPagePropsType = initialState, acti
     }
 
 }
-export type UpdateNewMessagesBodyType = ReturnType<typeof updateNewMessagesBodyAC>
+// export type UpdateNewMessagesBodyType = ReturnType<typeof updateNewMessagesBodyAC>
 export type SendMessageType = ReturnType<typeof sendMessageAC>
 
-export const updateNewMessagesBodyAC = (payload: { text: string }) => {
-    return {type: UPDATE_NEW_MESSAGES_BODY, payload} as const
-}
+// export const updateNewMessagesBodyAC = (payload: { text: string }) => {
+//     return {type: UPDATE_NEW_MESSAGES_BODY, payload} as const
+// }
 export const sendMessageAC = (payload: { text: string }) => {
     return {type: SEND_MESSAGE, payload} as const
+}
+
+export const sendMessageTC = (payload: { text: string }) => (dispatsh: Dispatch) => {
+    const {text} = payload
+    dispatsh(sendMessageAC({text}))
 }
 
 
@@ -68,3 +65,22 @@ export const sendMessageAC = (payload: { text: string }) => {
 //         {id: v1(), text},
 //     ]
 // };
+
+
+// case UPDATE_NEW_MESSAGES_BODY: {
+//     return {
+//         ...state,
+//         messages: [
+//             ...state.messages,
+//             {id: v1(), text: action.payload.text},
+//         ],
+//     }
+//
+//     // return {
+//     //     ...state,
+//     //     messages: [
+//     //         ...state.messages,
+//     //         {id: v1(), text: action.payload.text},
+//     //     ],
+//     // }
+// }

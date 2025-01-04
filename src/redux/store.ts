@@ -1,5 +1,5 @@
 import {AddNewPostType, UpdateNewPostTextType} from "./profileReducer";
-import {SendMessageType, UpdateNewMessagesBodyType} from "./dialogsReducer";
+import {SendMessageType} from "./dialogsReducer";
 
 //Types
 export type MyPostPropsType = {
@@ -28,20 +28,19 @@ export type MessagesProps = {
 }
 export type ProfilePagePropsType = {
     postData: MyPostPropsType [];
-    newPostText: string;
     profile: any;
     status: string;
 }
 export type MessagesPagePropsType = {
     users: UsersProps [];
     messages: MessagesProps[];
-    newMessagesBody: string
+    // newMessagesBody: string
 }
 export type StatePropsType = {
     profilePage: ProfilePagePropsType;
     messagesPage: MessagesPagePropsType;
 }
-export type ActionType = AddNewPostType | UpdateNewPostTextType | UpdateNewMessagesBodyType | SendMessageType
+export type ActionType = AddNewPostType | UpdateNewPostTextType | SendMessageType
 export type StoreType = {
     state: StatePropsType;
     callSubscriber: (value: StatePropsType) => void;
