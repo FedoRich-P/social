@@ -6,6 +6,7 @@ import {Navigate, useParams} from "react-router-dom";
 import {useAppDispatch} from "../../common/hooks/useAppDispatch.ts";
 import {useAppSelector} from "../../common/hooks/useAppSelector.ts";
 import {selectAuth, selectProfile} from "../../app/appSelectors.ts";
+import {MyPosts} from "./myPosts/MyPosts.tsx";
 
 export const Profile = () => {
     const profile = useAppSelector(selectProfile).profile;
@@ -27,7 +28,7 @@ export const Profile = () => {
     return (
         <>
             {usersProfile}
-            <MyPostsContainer/>
+            <MyPosts/>
         </>
     );
 };
