@@ -18,19 +18,19 @@ export const usersApi = {
 }
 
 export const authAPI = {
-    getMe() {
-        return instance
-            .get<APIResponse<MeResponse>>('auth/me')
-            .then(res => res.data)
+    async getMe() {
+        const res = await instance
+            .get<APIResponse<MeResponse>>('auth/me');
+        return res.data;
     },
-    loginMe(email: string, password: string, rememberMe: boolean) {
-        return instance
+    async logIn(payload: { email: string, password: string, rememberMe: boolean }) {
+        const res = await instance
             .post<APIResponse<LoginResponse>>('auth/login', {
-                email, password, rememberMe
-            })
-            .then(res => res.data)
+                ...payload,
+            });
+        return res.data;
     },
-    exitMe() {
+    logOut() {
         return instance
             .delete<APIResponse>('auth/login')
     },
@@ -45,21 +45,9 @@ export const profileApi = {
         return instance.get(`profile/status/${userId}`)
     },
     updateStatus(status: string) {
-        return instance.put(`profile/status`, {status})
+        return instance.put('profile/status', {status})
     }
 }
-
-// type SeverStatus = {
-//     resultCode: number
-//     messages: [],
-//     data: {}
-// }
-
-// type Login = {
-//     email: string,
-//     password: string,
-//     rememberMe: boolean,
-// }
 
 type APIResponse<T = {}> = {
     resultCode: number;
@@ -76,18 +64,3 @@ type MeResponse = {
 type LoginResponse = {
     userId: number;
 };
-// email: required(string)
-// valid confirmed user email address, which used during registration
-//
-// password: required(string)
-// valid user password
-//
-// rememberMe: (boolean)
-// if true, then session will not be expired after session finishing
-
-
-// axios.get<Response>(`https://social-network.samuraijs.com/api/1.0/auth/me`, {withCredentials: true}).then(res => {
-//     if(res.data.resultCode === 0) {
-//         dispatch(setAuthUsersAC(res.data.data));
-//     }
-// })

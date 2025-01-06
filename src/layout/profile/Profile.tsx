@@ -1,34 +1,47 @@
-import {ProfileInfo} from "./profileInfo/ProfileInfo";
-import {MyPostsContainer} from "./myPosts/post/MyPostsContainer";
-import {useEffect} from "react";
-import {getProfileStatusTC, getUserProfileTC} from "../../redux/profileReducer";
-import {Navigate, useParams} from "react-router-dom";
-import {useAppDispatch} from "../../common/hooks/useAppDispatch.ts";
-import {useAppSelector} from "../../common/hooks/useAppSelector.ts";
-import {selectAuth, selectProfile} from "../../app/appSelectors.ts";
-import {MyPosts} from "./myPosts/MyPosts.tsx";
+import { useEffect, useState } from "react";
+import { useAppDispatch } from "../../common/hooks/useAppDispatch.ts";
+import { useAppSelector } from "../../common/hooks/useAppSelector.ts";
+import { getUserProfileTC, getProfileStatusTC, resetProfileAC } from "../../redux/profileReducer";
+import { selectAuth, selectProfile } from "../../app/appSelectors.ts";
+import { ProfileInfo } from "./profileInfo/ProfileInfo";
+import { MyPosts } from "./myPosts/MyPosts.tsx";
+import { Navigate, useParams } from "react-router-dom";
 
 export const Profile = () => {
+    const dispatch = useAppDispatch();
+    const { id } = useParams();
+    const isAuth = useAppSelector(selectAuth).isAuth;
     const profile = useAppSelector(selectProfile).profile;
-    const isAuth = useAppSelector(selectAuth).isAuth
-
-    const dispatch = useAppDispatch()
-    const params = useParams();
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const userId = params.id || '31808';
-        dispatch(getUserProfileTC({userId}))
-        dispatch(getProfileStatusTC({userId}))
-    }, [params])
+        if (!id || !isAuth) {
+            dispatch(resetProfileAC());
+            setLoading(false);
+            return;
+        }
+        dispatch(getUserProfileTC({ userId: id }));
+        dispatch(getProfileStatusTC({ userId: id }));
+    }, [id, dispatch, isAuth]);
 
-    const usersProfile = <ProfileInfo {...profile}/>
+    useEffect(() => {
+        if (profile) {
+            setLoading(false);
+        }
+    }, [profile]);
 
-    if(!isAuth) return <Navigate to="/login"/>
+    if (!isAuth) {
+        return <Navigate to="/login" />;
+    }
+
+    if (loading) {
+        return <div>Loading...</div>;
+    }
 
     return (
         <>
-            {usersProfile}
-            <MyPosts/>
+            <ProfileInfo {...profile} />
+            <MyPosts />
         </>
     );
 };

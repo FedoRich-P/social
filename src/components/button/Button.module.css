@@ -6,6 +6,11 @@
     border-radius: 5px;
 }
 
+.button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
 .addButton {
     color: white;
     background-color: rgba(0, 128, 0, 0.4);

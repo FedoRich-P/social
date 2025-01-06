@@ -1,4 +1,4 @@
-import {ActionType, MessagesPagePropsType} from "./store";
+import {MessagesPagePropsType} from "./store";
 import {v1} from "uuid";
 import {Dispatch} from "redux";
 
@@ -20,8 +20,7 @@ const initialState = {
     ],
 }
 
-
-export const dialogsReducer = (state: MessagesPagePropsType = initialState, action: ActionType): MessagesPagePropsType => {
+export const dialogsReducer = (state: MessagesPagePropsType = initialState, action: DialogsType): MessagesPagePropsType => {
 
     switch (action.type) {
         case SEND_MESSAGE: {
@@ -38,49 +37,14 @@ export const dialogsReducer = (state: MessagesPagePropsType = initialState, acti
     }
 
 }
-// export type UpdateNewMessagesBodyType = ReturnType<typeof updateNewMessagesBodyAC>
-export type SendMessageType = ReturnType<typeof sendMessageAC>
 
-// export const updateNewMessagesBodyAC = (payload: { text: string }) => {
-//     return {type: UPDATE_NEW_MESSAGES_BODY, payload} as const
-// }
+export type DialogsType = ReturnType<typeof sendMessageAC>
+
 export const sendMessageAC = (payload: { text: string }) => {
     return {type: SEND_MESSAGE, payload} as const
 }
 
-export const sendMessageTC = (payload: { text: string }) => (dispatsh: Dispatch) => {
-    const {text} = payload
-    dispatsh(sendMessageAC({text}))
+export const sendMessageTC = (payload: { text: string }) => (dispatch: Dispatch) => {
+    dispatch(sendMessageAC({text: payload.text}))
 }
 
-
-// const updateNewMessagesBody = (text: string) => {
-//     state.newMessagesBody = text
-// };
-// const sendMessageBody = () => {
-//     let text = state.newMessagesBody;
-//     state.newMessagesBody = ''
-//     state.messages = [
-//         ...state.messages,
-//         {id: v1(), text},
-//     ]
-// };
-
-
-// case UPDATE_NEW_MESSAGES_BODY: {
-//     return {
-//         ...state,
-//         messages: [
-//             ...state.messages,
-//             {id: v1(), text: action.payload.text},
-//         ],
-//     }
-//
-//     // return {
-//     //     ...state,
-//     //     messages: [
-//     //         ...state.messages,
-//     //         {id: v1(), text: action.payload.text},
-//     //     ],
-//     // }
-// }

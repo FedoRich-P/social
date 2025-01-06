@@ -26,6 +26,8 @@ export const MyPosts = () => {
     const onSubmit: SubmitHandler<{ text: string }> = (data) => {
         const {text} = data;
 
+        console.log(data)
+
         try {
             dispatch(AddNewPosTC({text}));
         } catch (error) {
@@ -41,11 +43,15 @@ export const MyPosts = () => {
                 <h2 style={{marginBottom: '15px'}}>My posts</h2>
                 <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
                    <textarea
-                       {...register('text', {required: 'Message is required'})}
+                       {...register('text', {required: 'Message is required !'})}
                        placeholder="Enter your post"
                    />
-                    {errors.text && <div className={s.error}>{errors.text.message}</div>}
-                    <button type="submit" className={`${s.button} ${s.addButton}`}>
+                    {errors.text && <div className={styles.error}>{errors.text.message}</div>}
+                    <button
+                        type="submit"
+                        className={`${s.button} ${s.addButton}`}
+                        disabled={!!errors.text}
+                    >
                         Add post
                     </button>
 
